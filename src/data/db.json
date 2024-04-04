@@ -1,17 +1,12 @@
 {
   "todo": [
     {
-      "id": 1,
+      "id": "1",
       "title": "My first todo",
       "completed": false
     },
     {
-      "id": 2,
-      "title": "My second todo",
-      "completed": true
-    },
-    {
-      "id": 0.23942007338327853,
+      "id": "0.23942007338327853",
       "title": "go to work",
       "completed": false
     }
