@@ -38,7 +38,27 @@ function App() {
     setTodos(prevState => {
       return prevState.filter(todo => {
         return todo.id !== todoId
-      });// [todo,todo]
+      });
+    })
+  }
+
+  let updateTodo = (todo) =>{
+    //server
+    fetch(`http://localhost:3003/todo/${todo.id}` ,{
+      method : "PATCH",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body : JSON.stringify(todo)
+    })
+    //client
+    setTodos(prevState => {
+      return prevState.map(t => {
+        if(t.id === todo.id ){
+          return todo 
+        }
+        return t
+      })
     })
   }
 
@@ -47,7 +67,7 @@ function App() {
       <div className="todo-app">
         <h2>Todo App</h2>
         <TodoForm addTodo={addTodo}/>
-        <TodoList todos={todos} deleteTodo={deleteTodo}/>
+        <TodoList todos={todos} deleteTodo={deleteTodo} updateTodo={updateTodo}/>
         <CheckAllAndRemaining/>
         <div className="other-buttons-container">
           <TodoFilters/>
