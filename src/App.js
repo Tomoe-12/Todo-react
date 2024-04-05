@@ -5,20 +5,30 @@ import TodoList from './components/TodoList.js';
 import CheckAllAndRemaining from './components/CheckAllAndRemaining.js';
 import TodoFilters from './components/TodoFilters.js';
 import ClearCompletedBtn from './components/ClearCompletedBtn.js';
-import { useEffect, useState } from 'react';
-import { computeHeadingLevel } from '@testing-library/react';
-
+import { useCallback, useEffect, useState } from 'react';
 function App() {
 
-  let [todos, setTodos] = useState([]);
+  let [todos, setTodos] = useState([])
+  let [filterTodos, setFilterTodos] = useState(todos)
 
   useEffect(() => {
     fetch('http://localhost:3003/todo')
       .then(res => res.json())
       .then((todos) => {
         setTodos(todos)
+        setFilterTodos(todos)
       })
   }, [])
+
+  let filterBy = useCallback((filterState) => {
+    if (filterState === 'All') {
+      setFilterTodos(todos)
+    } if (filterState === 'Active') {
+      setFilterTodos(todos.filter(t => !t.completed))
+    } if (filterState === 'Completed') {
+      setFilterTodos(todos.filter(t => t.completed))
+    }
+  },[todos])
 
 
   let addTodo = (todo) => {
@@ -66,7 +76,7 @@ function App() {
   let checkAll = () => {
     // server
     todos.forEach(t => {
-      t.completed = true 
+      t.completed = true
       updateTodo(t)
     })
     // client
@@ -79,10 +89,10 @@ function App() {
 
   let remainingCount = todos.filter(t => !t.completed).length
 
-  let clearCompleted = ()=> {
+  let clearCompleted = () => {
     // server
     todos.forEach(t => {
-      if(t.completed) deleteTodo(t.id)
+      if (t.completed) deleteTodo(t.id)
     })
     //client
     setTodos((prevState => {
@@ -96,11 +106,11 @@ function App() {
       <div className="todo-app">
         <h2>Todo App</h2>
         <TodoForm addTodo={addTodo} />
-        <TodoList todos={todos} deleteTodo={deleteTodo} updateTodo={updateTodo} />
+        <TodoList todos={filterTodos} deleteTodo={deleteTodo} updateTodo={updateTodo} />
         <CheckAllAndRemaining remainingCount={remainingCount} checkAll={checkAll} />
         <div className="other-buttons-container">
-          <TodoFilters />
-          <ClearCompletedBtn clearCompleted={clearCompleted}/>
+          <TodoFilters filterBy={filterBy} />
+          <ClearCompletedBtn clearCompleted={clearCompleted} />
         </div>
       </div>
     </div>
