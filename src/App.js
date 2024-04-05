@@ -6,6 +6,7 @@ import CheckAllAndRemaining from './components/CheckAllAndRemaining.js';
 import TodoFilters from './components/TodoFilters.js';
 import ClearCompletedBtn from './components/ClearCompletedBtn.js';
 import { useEffect, useState } from 'react';
+import { computeHeadingLevel } from '@testing-library/react';
 
 function App() {
 
@@ -68,7 +69,6 @@ function App() {
       t.completed = true 
       updateTodo(t)
     })
-
     // client
     setTodos((prevState) => {
       return prevState.map(t => {
@@ -79,6 +79,18 @@ function App() {
 
   let remainingCount = todos.filter(t => !t.completed).length
 
+  let clearCompleted = ()=> {
+    // server
+    todos.forEach(t => {
+      if(t.completed) deleteTodo(t.id)
+    })
+    //client
+    setTodos((prevState => {
+      return prevState.filter(t => !t.completed)
+    }))
+  }
+
+
   return (
     <div className="todo-app-container">
       <div className="todo-app">
@@ -88,7 +100,7 @@ function App() {
         <CheckAllAndRemaining remainingCount={remainingCount} checkAll={checkAll} />
         <div className="other-buttons-container">
           <TodoFilters />
-          <ClearCompletedBtn />
+          <ClearCompletedBtn clearCompleted={clearCompleted}/>
         </div>
       </div>
     </div>

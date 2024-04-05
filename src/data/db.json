@@ -1,23 +1,8 @@
 {
   "todo": [
     {
-      "id": "1",
-      "title": "My first todo",
-      "completed": false
-    },
-    {
-      "id": "0.23942007338327853",
-      "title": "go to work",
-      "completed": false
-    },
-    {
-      "id": "0.8686614817315106",
-      "title": "hit gym",
-      "completed": false
-    },
-    {
-      "id": 0.7701272714062195,
-      "title": "to be novice",
+      "id": "0.48649460167473757",
+      "title": "hit there",
       "completed": false
     }
   ]
