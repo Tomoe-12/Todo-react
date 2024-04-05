@@ -9,31 +9,31 @@ import { useEffect, useState } from 'react';
 
 function App() {
 
-  let [ todos, setTodos ] = useState([]);
+  let [todos, setTodos] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:3003/todo')
-    .then(res => res.json())
-    .then((todos) => {
-      setTodos(todos)
-    })
+      .then(res => res.json())
+      .then((todos) => {
+        setTodos(todos)
+      })
   }, [])
 
 
   let addTodo = (todo) => {
-    fetch('http://localhost:3003/todo' ,{
-      method : "POST",
+    fetch('http://localhost:3003/todo', {
+      method: "POST",
       headers: {
         'Content-Type': 'application/json'
       },
-      body : JSON.stringify(todo)
+      body: JSON.stringify(todo)
     })
-    setTodos(prevState => [...prevState,todo])
+    setTodos(prevState => [...prevState, todo])
   }
 
   let deleteTodo = (todoId) => {
-    fetch(`http://localhost:3003/todo/${todoId}`,{
-      method : "DELETE"
+    fetch(`http://localhost:3003/todo/${todoId}`, {
+      method: "DELETE"
     })
     setTodos(prevState => {
       return prevState.filter(todo => {
@@ -42,36 +42,53 @@ function App() {
     })
   }
 
-  let updateTodo = (todo) =>{
+  let updateTodo = (todo) => {
     //server
-    fetch(`http://localhost:3003/todo/${todo.id}` ,{
-      method : "PATCH",
+    fetch(`http://localhost:3003/todo/${todo.id}`, {
+      method: "PATCH",
       headers: {
         'Content-Type': 'application/json'
       },
-      body : JSON.stringify(todo)
+      body: JSON.stringify(todo)
     })
     //client
     setTodos(prevState => {
       return prevState.map(t => {
-        if(t.id === todo.id ){
-          return todo 
+        if (t.id === todo.id) {
+          return todo
         }
         return t
       })
     })
   }
 
+  let checkAll = () => {
+    // server
+    todos.forEach(t => {
+      t.completed = true 
+      updateTodo(t)
+    })
+
+    // client
+    setTodos((prevState) => {
+      return prevState.map(t => {
+        return { ...t, completed: true }
+      })
+    })
+  }
+
+  let remainingCount = todos.filter(t => !t.completed).length
+
   return (
     <div className="todo-app-container">
       <div className="todo-app">
         <h2>Todo App</h2>
-        <TodoForm addTodo={addTodo}/>
-        <TodoList todos={todos} deleteTodo={deleteTodo} updateTodo={updateTodo}/>
-        <CheckAllAndRemaining/>
+        <TodoForm addTodo={addTodo} />
+        <TodoList todos={todos} deleteTodo={deleteTodo} updateTodo={updateTodo} />
+        <CheckAllAndRemaining remainingCount={remainingCount} checkAll={checkAll} />
         <div className="other-buttons-container">
-          <TodoFilters/>
-          <ClearCompletedBtn/>
+          <TodoFilters />
+          <ClearCompletedBtn />
         </div>
       </div>
     </div>
