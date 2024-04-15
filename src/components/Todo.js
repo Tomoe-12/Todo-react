@@ -31,7 +31,13 @@ export default function Todo({todo , deleteTodo , updateTodo }) {
     <li className="todo-item-container">
         <div className="todo-item">
             <input type="checkbox" checked={todo.completed} onChange={handleCheckbox}/>
-           { !isEdit &&  <span onDoubleClick={ ()=> setIsEdit(true) } className={`todo-item-label ${todo.completed ? 'line-through' : ''}`}>
+           { !isEdit &&  <span onDoubleClick={ ()=> {
+            if(todo.completed){
+              setIsEdit(false)
+            }else{
+              setIsEdit(true)
+            }
+           } } className={`todo-item-label ${todo.completed ? 'line-through' : ''}`}>
             {todo.title}
             </span>}
             { isEdit && 
