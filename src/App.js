@@ -12,7 +12,7 @@ function App() {
   let [filterTodos, setFilterTodos] = useState(todos)
 
   useEffect(() => {
-    fetch('http://localhost:3003/todo')
+    fetch('http://localhost:3000/todo/')
       .then(res => res.json())
       .then((todos) => {
         setTodos(todos)
@@ -32,7 +32,7 @@ function App() {
 
 
   let addTodo = (todo) => {
-    fetch('http://localhost:3003/todo', {
+    fetch('http://localhost:3000/todo/', {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -43,7 +43,7 @@ function App() {
   }
 
   let deleteTodo = (todoId) => {
-    fetch(`http://localhost:3003/todo/${todoId}`, {
+    fetch(`http://localhost:3000/todo/${todoId}`, {
       method: "DELETE"
     })
     setTodos(prevState => {
@@ -55,7 +55,7 @@ function App() {
 
   let updateTodo = (todo) => {
     //server
-    fetch(`http://localhost:3003/todo/${todo.id}`, {
+    fetch(`http://localhost:3000/todo/${todo.id}`, {
       method: "PATCH",
       headers: {
         'Content-Type': 'application/json'
